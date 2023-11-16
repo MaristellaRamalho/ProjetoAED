@@ -74,7 +74,7 @@ bool Retira(ListaCadastral &L, Musica musica) {
   }
   NodePtr PAux = L.Primeiro;
   do {
-    // se o elemento procurado for o �nico da lista
+    // se o elemento procurado for o unico da lista
     if (PAux->dir == PAux && PAux->info.getNome() == musica.getNome() ){
       delete PAux;
       L.Primeiro = NULL;
@@ -83,7 +83,6 @@ bool Retira(ListaCadastral &L, Musica musica) {
     else if (PAux->info.getNome() == musica.getNome()) {
       PAux->esq->dir = PAux->dir;
       PAux->dir->esq = PAux->esq;
-      L.Primeiro = PAux->dir;
       delete PAux;
     }
     PAux = PAux->dir;
