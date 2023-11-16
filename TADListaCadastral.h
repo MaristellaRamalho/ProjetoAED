@@ -2,17 +2,19 @@
 #define TADLISTACADASTRAL_H_INCLUDED
 #include <iostream>
 #include <string.h>
+#include "NodeGenerico.h"
+#include "Musica.h"
 using namespace std;
 
-// Lista Cadastral sem elementos repetidos, não ordenada, implementada como uma lista duplamente encadeada circular.
+// Lista Cadastral sem elementos repetidos, nï¿½o ordenada, implementada como uma lista duplamente encadeada circular. O tipo de elemento da lista serÃ¡ Musica
 
-struct Node {
-  string info;
-  struct Node *esq;
-  struct Node *dir;
-};
 
-typedef struct Node *NodePtr;
+// Definindo um tipo para o Node que contem o campo info do tipo Musica
+typedef Node<Musica> NodeMusica;
+
+// Definindo um tipo que corresponde a um ponteiro para Node<Musica>
+typedef NodeMusica* NodePtr;
+
 
 typedef struct Lista {
   NodePtr Atual;
@@ -26,31 +28,32 @@ void Cria(ListaCadastral &L) {
 
 bool Vazia(ListaCadastral &L) { return L.Primeiro == NULL; }
 
-bool EstaNalista(ListaCadastral &L, string elemento){
+bool EstaNalista(ListaCadastral &L, Musica musica){
   if(!Vazia(L)){
     NodePtr P = L.Primeiro;
     do{ // faz pelo menos uma vez
-        if(P->info == elemento)
+        if(P->info.getNome() == musica.getNome())
             return true;
         P = P->dir;
-  }while( P != L.Primeiro); // não dar loop infinito
+  }while( P != L.Primeiro); // nï¿½o dar loop infinito
   return false;
   }
 
 }
 
 
-bool Inserir(ListaCadastral &L, string elemento) {
-  NodePtr NovoNo = new Node;
+bool Inserir(ListaCadastral &L, Musica musica) {
+  NodePtr NovoNo = new NodeMusica;
   if (NovoNo != NULL) {
-    NovoNo->info = elemento;
+    NovoNo->info.setNome(musica.getNome());
+    NovoNo->info.setLink(musica.getLink());
     if (Vazia(L)) { // se a lista estiver vazia
       NovoNo->esq = NovoNo;
       NovoNo->dir = NovoNo;
       L.Atual = NovoNo;
       L.Primeiro = NovoNo;
     } else {
-      if(!EstaNalista(L, elemento)){ // se não estiver na lista
+      if(!EstaNalista(L, musica) && musica.getNome() != "Sem nome" && musica.getLink() != "Sem link") { // se nao estiver na lista e se for um nome valido
         NodePtr Ultimo = L.Primeiro->esq;
         NovoNo->esq = Ultimo;
         NovoNo->dir = L.Primeiro;
@@ -58,25 +61,26 @@ bool Inserir(ListaCadastral &L, string elemento) {
         L.Primeiro->esq = NovoNo;
       }
     }
-    return true; // Inserção bem-sucedida
+    return true; // Inserï¿½ï¿½o bem-sucedida
   } else {
     return false;
   }
 }
 
-bool Retira(ListaCadastral &L, string elemento) {
-  if (!EstaNalista(L, elemento)) { // inclui possibilidade de lista vazia
+
+bool Retira(ListaCadastral &L, Musica musica) {
+  if (!EstaNalista(L, musica)) { // inclui possibilidade de lista vazia
     return false;
   }
   NodePtr PAux = L.Primeiro;
   do {
-    // se o elemento procurado for o único da lista
-    if (PAux->dir == PAux && PAux->info == elemento ){
+    // se o elemento procurado for o ï¿½nico da lista
+    if (PAux->dir == PAux && PAux->info.getNome() == musica.getNome() ){
       delete PAux;
       L.Primeiro = NULL;
     }
     // Se existirem mais de um elemento na lista e o elemento apontado por PAux for o elemento procurado
-    else if (PAux->info == elemento) {
+    else if (PAux->info.getNome() == musica.getNome()) {
       PAux->esq->dir = PAux->dir;
       PAux->dir->esq = PAux->esq;
       L.Primeiro = PAux->dir;
@@ -87,7 +91,7 @@ bool Retira(ListaCadastral &L, string elemento) {
   return true;
 }
 
-void pegaOProximo(ListaCadastral &L, string &elemento, bool &TemElemento) {
+void pegaOProximo(ListaCadastral &L, Musica &musica, bool &TemElemento) {
   if (Vazia(L))
     TemElemento = false;
   else {
@@ -97,12 +101,13 @@ void pegaOProximo(ListaCadastral &L, string &elemento, bool &TemElemento) {
       TemElemento = false;
     else{
         TemElemento = true;
-        elemento = L.Atual->info;
+        musica.setNome(L.Atual->info.getNome());
+        musica.setLink(L.Atual->info.getLink());
     }
   }
 }
 
-void pegaOAnterior(ListaCadastral &L, string &elemento, bool &TemElemento) {
+void pegaOAnterior(ListaCadastral &L, Musica &musica, bool &TemElemento) {
   if (Vazia(L))
     TemElemento = false;
   else {
@@ -112,18 +117,23 @@ void pegaOAnterior(ListaCadastral &L, string &elemento, bool &TemElemento) {
       TemElemento = false;
     else
       TemElemento = true;
-    elemento = L.Atual->info;
+    musica.setNome(L.Atual->info.getNome());
+    musica.setLink(L.Atual->info.getLink());
   }
     }
 
-void PegaOPrimeiro(Lista &L, string &elemento, bool &TemElemento) {
+void PegaOPrimeiro(Lista &L, Musica &musica, bool &TemElemento) {
   if (Vazia(L))
     TemElemento = false;
   else {
     L.Atual = L.Primeiro;
-    elemento = L.Atual->info;
+    musica.setNome(L.Atual->info.getNome());
+    musica.setLink(L.Atual->info.getLink());
     TemElemento = true;
   }
 }
+
+
+
 
 #endif // TADLISTACADASTRAL_H_INCLUDED
