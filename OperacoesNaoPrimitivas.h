@@ -1,14 +1,16 @@
 #include "TADListaCadastral.h"
+#include "Musica.h"
 #ifndef OPERACOESNAOPRIMITIVAS_H_INCLUDED
 #define OPERACOESNAOPRIMITIVAS_H_INCLUDED
 
 void ImprimeLista(ListaCadastral &L) {
-  string elemento;
+  Musica musica;
   bool ok;
-  PegaOPrimeiro(L, elemento, ok);
+  PegaOPrimeiro(L, musica, ok);
   while (ok) {
-    cout << elemento << endl;
-    pegaOProximo(L, elemento, ok);
+    cout << "Nome: " << musica.getNome() << endl;
+    cout << "Link: " << musica.getLink() << endl;;
+    pegaOProximo(L, musica, ok);
   }
 }
 
