@@ -6,6 +6,7 @@
 #include "Musica.h"
 using namespace std;
 
+// Problema na funçao PegaOAnterior
 // Lista Cadastral sem elementos repetidos, n�o ordenada, implementada como uma lista duplamente encadeada circular. O tipo de elemento da lista será Musica
 
 
