@@ -1,50 +1,25 @@
 #include <iostream>
 #include "TADListaCadastral.h"
 #include "OperacoesNaoPrimitivas.h"
+#include "Musica.h"
 using namespace std;
 
 int main()
 {
-    ListaCadastral Playlist;
-    Cria(Playlist);
+    ListaCadastral Playlit;
+    Cria(Playlit);
 
+    Musica musica1("Gossip", "https://www.youtube.com/watch?v=9IPLXNEzsLc&list=RD9IPLXNEzsLc&start_radio=1");
+    Musica musica2("Style", "https://www.youtube.com/watch?v=-CmadmM5cOk&list=RD9IPLXNEzsLc&index=3&pp=8AUB");
 
-    Inserir(Playlist, "Karma");
-    Inserir(Playlist, "Nessa Cidade");
-    Inserir(Playlist, "Ceu Azul");
-    ImprimeLista(Playlist);
+    Inserir(Playlit, musica1);
+    Inserir(Playlit, musica2);
 
-    Inserir(Playlist, "Animals");
-    Inserir(Playlist, "Ceu Azul" );
-    Inserir(Playlist, "Darkside");
-    cout << endl ;
-    ImprimeLista(Playlist);
-
-    Retira(Playlist, "Karma");
-    cout << endl ;
-    ImprimeLista(Playlist);
-
-    Retira(Playlist, "Love Love");
-    cout << endl ;
-    ImprimeLista(Playlist);
-    cout << endl;
-
-
-    string musica;
-    bool ok;
-
-    PegaOPrimeiro(Playlist, musica, ok);
-    cout << "Musica: " << musica << endl;
-
-    pegaOProximo(Playlist, musica, ok);
-    cout << "Musica: " << musica << endl;
-
-    pegaOAnterior(Playlist, musica, ok);
-    cout << "Musica: " << musica << endl;
+    cout << "Playlist: " << endl;
+    ImprimeLista(Playlit);
 
     return 0;
 }
-
 
 
 
