@@ -52,6 +52,7 @@ bool Inserir(ListaCadastral &L, Musica musica) {
       NovoNo->dir = NovoNo;
       L.Atual = NovoNo;
       L.Primeiro = NovoNo;
+      return true;
     } else {
       if(!EstaNalista(L, musica) && musica.getNome() != "Sem nome" && musica.getLink() != "Sem link") { // se nao estiver na lista e se for um nome valido
         NodePtr Ultimo = L.Primeiro->esq;
@@ -59,11 +60,13 @@ bool Inserir(ListaCadastral &L, Musica musica) {
         NovoNo->dir = L.Primeiro;
         Ultimo->dir = NovoNo;
         L.Primeiro->esq = NovoNo;
+        return true;
+      }else{
+          return false; // não inseriu
       }
     }
-    return true; // Inser��o bem-sucedida
   } else {
-    return false;
+    return false; // não alocou
   }
 }
 
@@ -78,16 +81,18 @@ bool Retira(ListaCadastral &L, Musica musica) {
     if (PAux->dir == PAux && PAux->info.getNome() == musica.getNome() ){
       delete PAux;
       L.Primeiro = NULL;
+      return true;
     }
     // Se existirem mais de um elemento na lista e o elemento apontado por PAux for o elemento procurado
     else if (PAux->info.getNome() == musica.getNome()) {
       PAux->esq->dir = PAux->dir;
       PAux->dir->esq = PAux->esq;
       delete PAux;
+      return true;
     }
     PAux = PAux->dir;
   } while (PAux != L.Primeiro);
-  return true;
+  return false;
 }
 
 void pegaOProximo(ListaCadastral &L, Musica &musica, bool &TemElemento) {
