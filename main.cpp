@@ -2,6 +2,7 @@
 #include "TADListaCadastral.h"
 #include "OperacoesNaoPrimitivas.h"
 #include "Musica.h"
+#include <string>
 using namespace std;
 
 void imprimeMenu() {
@@ -15,15 +16,14 @@ void imprimeMenu() {
     cout << "6 - Mostrar PlayList" << endl;
 }
 
-
-void povoarPlayList(ListaCadastral &P){
+void povoarPlayList(ListaCadastral &P) {
     Musica m1("Style", "https://www.youtube.com/watch?v=-CmadmM5cOk&list=RD-CmadmM5cOk&start_radio=1");
     Inserir(P, m1);
 
-    Musica m2("I know its over" , "https://www.youtube.com/watch?v=M6o1SEj02t0&list=RDM6o1SEj02t0&start_radio=1");
+    Musica m2("I know its over", "https://www.youtube.com/watch?v=M6o1SEj02t0&list=RDM6o1SEj02t0&start_radio=1");
     Inserir(P, m2);
 
-    Musica m3("Julho" ,"https://www.youtube.com/watch?v=d9RM8viAKrw&list=RDd9RM8viAKrw&start_radio=1");
+    Musica m3("Julho", "https://www.youtube.com/watch?v=d9RM8viAKrw&list=RDd9RM8viAKrw&start_radio=1");
     Inserir(P, m3);
 
     Musica m4("Valentine", "https://www.youtube.com/watch?v=8XQYz7JKjWI");
@@ -34,7 +34,7 @@ int main() {
     // Criação e inicialização da lista
     ListaCadastral Playlist;
     Cria(Playlist);
-    povoarPlayList(Playlist);
+     //povoarPlayList(Playlist);
 
     imprimeMenu();
     int opcao;
@@ -44,8 +44,9 @@ int main() {
     bool ok;
 
     do {
-        cout << endl << "opcao: ";
+        cout << endl << "Opcao: ";
         cin >> opcao;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Limpar buffer de entrada
 
         switch (opcao) {
             case 0:
@@ -54,13 +55,13 @@ int main() {
             case 1:
                 // Adicionar música
                 cout << "Nome: ";
-                cin >> nomeM;
+                getline(cin, nomeM);
                 cout << "Link: ";
                 cin >> linkM;
                 musica.setNome(nomeM);
                 musica.setLink(linkM);
                 ok = Inserir(Playlist, musica);
-                ok ? cout << "Musica adicionada com sucesso!" << endl : cout<<"Oops, musica ja adicionada"<<endl;
+                ok ? cout << "Musica adicionada com sucesso!" << endl : cout << "Oops, musica já adicionada" << endl;
                 break;
             case 2:
                 // Remover Música
@@ -68,23 +69,23 @@ int main() {
                 cin >> nomeM;
                 musica.setNome(nomeM);
                 ok = Retira(Playlist, musica);
-                ok ? cout << "Musica removida com sucesso!"<< endl: cout<<"Oops, musica nao encontrada"<<endl;
+                ok ? cout << "Musica removida com sucesso!" << endl : cout << "Oops, musica não encontrada" << endl;
                 break;
 
             case 3:
-                // Tocar primeira musica
+                // Tocar primeira música
                 PegaOPrimeiro(Playlist, musica, ok);
-                ok ? cout << "Tocando : " << musica.getNome() << " | " << musica.getLink() << endl : cout << "Playlist vazia :(";
+                ok ? cout << "Tocando: " << musica.getNome() << " | " << musica.getLink() << endl : cout << "Playlist vazia :(";
                 break;
             case 4:
                 // Tocar próxima música
                 pegaOProximo(Playlist, musica, ok);
-                ok ? cout << "Tocando : " << musica.getNome() << " | " << musica.getLink() << endl : cout << "Oops, sem proxima musica :(";
+                ok ? cout << "Tocando: " << musica.getNome() << " | " << musica.getLink() << endl : cout << "Oops, sem proxima musica :(";
                 break;
             case 5:
-                // Tocar musica anterior
+                // Tocar música anterior
                 pegaOAnterior(Playlist, musica, ok);
-                ok ? cout << "Tocando : " << musica.getNome() << " | " << musica.getLink() << endl : cout << "Oops, sem musica anterior :(";
+                ok ? cout << "Tocando: " << musica.getNome() << " | " << musica.getLink() << endl : cout << "Oops, sem musica anterior :(";
                 break;
             case 6:
                 // Mostrar Playlist
@@ -92,8 +93,9 @@ int main() {
                 ImprimeLista(Playlist);
                 break;
             default:
-                cout << "Opçao invalida ";
+                cout << "Opção invalida" << endl;
         }
     } while (opcao != 0);
+
     return 0;
 }
