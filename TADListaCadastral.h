@@ -73,59 +73,74 @@ bool Inserir(ListaCadastral &L, Musica musica) {
 
 
 bool Retira(ListaCadastral &L, Musica musica) {
-  if (!EstaNalista(L, musica)) { // inclui possibilidade de lista vazia
+    if (!EstaNalista(L, musica) || Vazia(L)) {
+        // Se a lista estiver vazia ou o elemento não estiver presente, retorna falso
+        return false;
+    }
+
+    NodePtr PAux = L.Primeiro;
+
+    do {
+        //Caso seja o único elemento
+        if (PAux->dir == PAux && PAux->info.getNome() == musica.getNome() ){
+              delete PAux;
+              L.Primeiro = NULL;
+              return true;
+        }
+        else if (PAux->info.getNome() == musica.getNome()) {
+            if (PAux == L.Primeiro) {
+                // Se o elemento a ser removido for o primeiro
+                L.Primeiro = PAux->dir;
+            }
+
+            PAux->esq->dir = PAux->dir;
+            PAux->dir->esq = PAux->esq;
+            delete PAux;
+            return true;
+        }
+
+        PAux = PAux->dir;
+    } while (PAux != L.Primeiro);
+
     return false;
-  }
-  NodePtr PAux = L.Primeiro;
-  do {
-    // se o elemento procurado for o unico da lista
-    if (PAux->dir == PAux && PAux->info.getNome() == musica.getNome() ){
-      delete PAux;
-      L.Primeiro = NULL;
-      return true;
-    }
-    // Se existirem mais de um elemento na lista e o elemento apontado por PAux for o elemento procurado
-    else if (PAux->info.getNome() == musica.getNome()) {
-      PAux->esq->dir = PAux->dir;
-      PAux->dir->esq = PAux->esq;
-      delete PAux;
-      return true;
-    }
-    PAux = PAux->dir;
-  } while (PAux != L.Primeiro);
-  return false;
 }
 
+
 void pegaOProximo(ListaCadastral &L, Musica &musica, bool &TemElemento) {
-  if (Vazia(L))
-    TemElemento = false;
-  else {
-    if (L.Atual != NULL)
-      L.Atual = L.Atual->dir;
-    if (L.Atual == L.Primeiro)
-      TemElemento = false;
-    else{
-        TemElemento = true;
-        musica.setNome(L.Atual->info.getNome());
-        musica.setLink(L.Atual->info.getLink());
+    if (Vazia(L)) {
+        TemElemento = false;
+        return;
     }
-  }
+
+    if (L.Atual != NULL) {
+        L.Atual = L.Atual->dir;
+    } else {
+        // Se L.Atual for NULL, estamos no final da lista. Volte para o início.
+        L.Atual = L.Primeiro;
+    }
+
+    TemElemento = true;
+    musica.setNome(L.Atual->info.getNome());
+    musica.setLink(L.Atual->info.getLink());
 }
 
 void pegaOAnterior(ListaCadastral &L, Musica &musica, bool &TemElemento) {
-  if (Vazia(L))
-    TemElemento = false;
-  else {
-    if (L.Atual != NULL)
-      L.Atual = L.Atual->esq;
-    if (L.Atual == L.Primeiro)
-      TemElemento = false;
-    else
-      TemElemento = true;
+    if (Vazia(L)) {
+        TemElemento = false;
+        return;
+    }
+
+    if (L.Atual != NULL) {
+        L.Atual = L.Atual->esq;
+    } else {
+        // Se L.Atual for NULL, estamos no início da lista. Avance para o final.
+        L.Atual = L.Primeiro->esq;
+    }
+
+    TemElemento = true;
     musica.setNome(L.Atual->info.getNome());
     musica.setLink(L.Atual->info.getLink());
-  }
-    }
+}
 
 void PegaOPrimeiro(Lista &L, Musica &musica, bool &TemElemento) {
   if (Vazia(L))
