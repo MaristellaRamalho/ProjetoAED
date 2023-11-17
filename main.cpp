@@ -34,7 +34,7 @@ int main() {
     // Criação e inicialização da lista
     ListaCadastral Playlist;
     Cria(Playlist);
-     //povoarPlayList(Playlist);
+    povoarPlayList(Playlist);
 
     imprimeMenu();
     int opcao;
@@ -58,6 +58,7 @@ int main() {
                 getline(cin, nomeM);
                 cout << "Link: ";
                 cin >> linkM;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Limpar buffer de entrada
                 musica.setNome(nomeM);
                 musica.setLink(linkM);
                 ok = Inserir(Playlist, musica);
@@ -66,10 +67,11 @@ int main() {
             case 2:
                 // Remover Música
                 cout << "Nome: ";
-                cin >> nomeM;
+                getline(cin, nomeM);
+                //cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Limpar buffer de entrada
                 musica.setNome(nomeM);
                 ok = Retira(Playlist, musica);
-                ok ? cout << "Musica removida com sucesso!" << endl : cout << "Oops, musica não encontrada" << endl;
+                ok ? cout << "Musica removida com sucesso!" << endl : cout << "Oops, musica nao encontrada" << endl;
                 break;
 
             case 3:
